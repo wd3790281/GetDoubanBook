@@ -10,13 +10,23 @@ public class GetBook {
 
     public static void main(String[] args) {
 
-        QueryForBooks query1 = new QueryForBooks("互联网");
-        QueryForBooks query2 = new QueryForBooks("算法");
-        QueryForBooks query3 = new QueryForBooks("编程");
+        String[] query = {"互联网", "算法", "编程"};
 
-        query1.run();
-        query2.run();
-        query3.run();
+        try {
+            ArrayList<Thread> myThreads = new ArrayList<>();
+            for (int i = 0; i < query.length; i++) {
+                QueryForBooks queryForBooks = new QueryForBooks(query[i]);
+                Thread thread = new Thread(queryForBooks);
+                thread.start();
+                myThreads.add(thread);
+            }
+            
+            for (Thread t : myThreads) {
+                t.join();
+            }
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
 
         quickSort(validBooks, 0, validBooks.size()-1);
 
